@@ -45,6 +45,7 @@ import net.osmand.plus.resources.AsyncLoadingThread.TileLoadDownloadRequest;
 import net.osmand.plus.resources.AsyncLoadingThread.TransportLoadRequest;
 import net.osmand.plus.srtmplugin.SRTMPlugin;
 import net.osmand.plus.views.OsmandMapLayer.DrawSettings;
+import net.osmand.plus.activities.search.SearchPOIActivity;
 import net.osmand.util.Algorithms;
 import net.osmand.util.MapUtils;
 
@@ -765,6 +766,10 @@ public class ResourceManager {
 							amenities.addAll(r);
 						}
 					}
+					if (SearchPOIActivity.stopSearching) {
+						searchAmenitiesInProgress = false;
+						break;
+					}
 				}
 			}
 		} finally {
@@ -839,8 +844,10 @@ public class ResourceManager {
 					} else {
 						list.add((AmenityIndexRepositoryBinary) index);
 					}
-					
 				}
+			}
+			if (SearchPOIActivity.stopSearching) {
+				break;
 			}
 		}
 //		int left = MapUtils.get31TileNumberX(leftLongitude);
@@ -853,6 +860,9 @@ public class ResourceManager {
 		int bottom = Integer.MAX_VALUE;
 		for (AmenityIndexRepositoryBinary index : list) {
 			if (matcher != null && matcher.isCancelled()) {
+				break;
+			}
+			if (SearchPOIActivity.stopSearching) {
 				break;
 			}
 			List<Amenity> result = index.searchAmenitiesByName(MapUtils.get31TileNumberX(lon), MapUtils.get31TileNumberY(lat),

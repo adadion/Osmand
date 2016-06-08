@@ -118,6 +118,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 	private static int RESULT_REQUEST_CODE = 54;
 
 	private CharSequence tChange;
+	public static boolean stopSearching = false;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu omenu) {
@@ -183,6 +184,13 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 		}
 		updateButtonState(false);
 		return true;
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		stopSearching = true;
+		//Toast.makeText(SearchPOIActivity.this, R.string.shared_string_ok, Toast.LENGTH_LONG).show();
 	}
 
 	public Toolbar getClearToolbar(boolean visible) {
@@ -466,6 +474,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 	private synchronized void runNewSearchQuery(net.osmand.Location location, int requestType) {
 		if (currentSearchTask == null || currentSearchTask.getStatus() == Status.FINISHED ) {
 			currentSearchTask = new SearchAmenityTask(location, requestType);
+			stopSearching = false;
 			currentSearchTask.execute();
 		}
 	}
@@ -607,7 +616,6 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 		public SearchAmenityTask(net.osmand.Location location, int requestType) {
 			this.searchLocation = location;
 			this.requestType = requestType;
-
 		}
 
 		net.osmand.Location getSearchedLocation() {
