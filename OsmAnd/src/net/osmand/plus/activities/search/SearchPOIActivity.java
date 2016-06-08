@@ -473,7 +473,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 
 	private synchronized void runNewSearchQuery(net.osmand.Location location, int requestType) {
 		if (currentSearchTask == null || currentSearchTask.getStatus() == Status.FINISHED ) {
-			//stopSearching = false;
+			stopSearching = false;
 			currentSearchTask = new SearchAmenityTask(location, requestType);
 			currentSearchTask.execute();
 		}
