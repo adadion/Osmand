@@ -190,6 +190,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 	protected void onDestroy() {
 		super.onDestroy();
 		stopSearching = true;
+		filter.clearPreviousZoom();
 	}
 
 	public Toolbar getClearToolbar(boolean visible) {
