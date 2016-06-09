@@ -190,7 +190,6 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 	protected void onDestroy() {
 		super.onDestroy();
 		stopSearching = true;
-		//Toast.makeText(SearchPOIActivity.this, R.string.shared_string_ok, Toast.LENGTH_LONG).show();
 	}
 
 	public Toolbar getClearToolbar(boolean visible) {
@@ -294,6 +293,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 			} else {
 				filter.clearPreviousZoom();
 				// run query again
+				stopSearching = false;
 				runNewSearchQuery(location, NEW_SEARCH_INIT);
 			}
 		} else {
