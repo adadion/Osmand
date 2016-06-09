@@ -119,7 +119,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 
 	private CharSequence tChange;
 	public static boolean stopSearching = false;
-	private boolean firstRound = true;
+	private boolean freshSearch = true;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu omenu) {
@@ -191,7 +191,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 	protected void onDestroy() {
 		super.onDestroy();
 		stopSearching = true;
-		firstRound = true;
+		freshSearch = true;
 	}
 
 	public Toolbar getClearToolbar(boolean visible) {
@@ -209,7 +209,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 					.show();
 			return true;
 		}
-		if ((isNameSearch() && !Algorithms.objectEquals(filter.getFilterByName(), query)) || firstRound) {
+		if ((isNameSearch() && !Algorithms.objectEquals(filter.getFilterByName(), query)) || freshSearch) {
 			filter.clearPreviousZoom();
 			filter.setFilterByName(query);
 			stopSearching = false;
@@ -477,7 +477,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 
 	private synchronized void runNewSearchQuery(net.osmand.Location location, int requestType) {
 		if (currentSearchTask == null || currentSearchTask.getStatus() == Status.FINISHED ) {
-			firstRound = true;
+			freshSearch = true;
 			currentSearchTask = new SearchAmenityTask(location, requestType);
 			currentSearchTask.execute();
 		}
@@ -671,7 +671,9 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 				changeFilter(tChange);
 				tChange = null;
 			}
-			firstRound = false;
+			if (!stopSearching) {
+				freshSearch = false;
+			}
 			amenityAdapter.notifyDataSetChanged();
 			lastSearchedLocation = searchLocation;
 		}
