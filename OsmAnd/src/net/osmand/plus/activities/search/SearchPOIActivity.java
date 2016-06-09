@@ -211,9 +211,11 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 		if (isNameSearch() && !Algorithms.objectEquals(filter.getFilterByName(), query)) {
 			filter.clearPreviousZoom();
 			filter.setFilterByName(query);
+			stopSearching = false;
 			runNewSearchQuery(location, NEW_SEARCH_INIT);
 		} else {
 			filter.setFilterByName(query);
+			stopSearching = false;
 			runNewSearchQuery(location, SEARCH_FURTHER);
 		}
 		return true;
@@ -473,7 +475,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 
 	private synchronized void runNewSearchQuery(net.osmand.Location location, int requestType) {
 		if (currentSearchTask == null || currentSearchTask.getStatus() == Status.FINISHED ) {
-			stopSearching = false;
+			//stopSearching = false;
 			currentSearchTask = new SearchAmenityTask(location, requestType);
 			currentSearchTask.execute();
 		}
