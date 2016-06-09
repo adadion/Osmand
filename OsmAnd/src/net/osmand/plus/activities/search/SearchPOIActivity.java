@@ -208,7 +208,7 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 					.show();
 			return true;
 		}
-		if (isNameSearch() && !Algorithms.objectEquals(filter.getFilterByName(), query)) {
+		if ((isNameSearch() && !Algorithms.objectEquals(filter.getFilterByName(), query)) || filter.distanceInd() == 0) {
 			filter.clearPreviousZoom();
 			filter.setFilterByName(query);
 			stopSearching = false;

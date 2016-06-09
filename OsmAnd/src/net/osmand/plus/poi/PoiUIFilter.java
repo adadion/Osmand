@@ -203,6 +203,10 @@ public class PoiUIFilter implements SearchPoiTypeFilter, Comparable<PoiUIFilter>
 	public void clearPreviousZoom(){
 		distanceInd = 0;
 	}
+
+	public int distanceInd(){
+		return distanceInd;
+	}
 	
 	public List<Amenity> initializeNewSearch(double lat, double lon, int firstTimeLimit, ResultMatcher<Amenity> matcher){
 		clearPreviousZoom();
