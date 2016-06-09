@@ -191,7 +191,6 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 	protected void onDestroy() {
 		super.onDestroy();
 		stopSearching = true;
-		freshSearch = true;
 	}
 
 	public Toolbar getClearToolbar(boolean visible) {
@@ -477,7 +476,6 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 
 	private synchronized void runNewSearchQuery(net.osmand.Location location, int requestType) {
 		if (currentSearchTask == null || currentSearchTask.getStatus() == Status.FINISHED ) {
-			freshSearch = true;
 			currentSearchTask = new SearchAmenityTask(location, requestType);
 			currentSearchTask.execute();
 		}
@@ -671,7 +669,9 @@ public class SearchPOIActivity extends OsmandListActivity implements OsmAndCompa
 				changeFilter(tChange);
 				tChange = null;
 			}
-			if (!stopSearching) {
+			if (stopSearching) {
+				freshSearch = true;
+			} else {
 				freshSearch = false;
 			}
 			amenityAdapter.notifyDataSetChanged();
